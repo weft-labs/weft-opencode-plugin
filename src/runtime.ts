@@ -2,10 +2,10 @@ import type { ProviderId } from "./catalog.js";
 import { selectOperation } from "./catalog.js";
 import type { RuntimeConfig } from "./config.js";
 import { usdToMicros } from "./money.js";
-import { normalizeResults } from "./normalize.js";
 import type { WebSearchResult } from "./normalize.js";
-import { buildFetchRequest } from "./request.js";
+import { normalizeResults } from "./normalize.js";
 import type { PaidRequest } from "./request.js";
+import { buildFetchRequest } from "./request.js";
 
 export interface CatalogSearchRequest {
   readonly query: string;
@@ -27,13 +27,22 @@ interface FetchCallOptions extends CallOptions {
   readonly idempotencyKey: string;
 }
 
+export interface PaidFetchResponse {
+  readonly status: number;
+  readonly bodyBase64: string;
+  readonly paidUsd: string;
+  readonly heldUsd: string | null;
+  readonly paymentStatus: string;
+  readonly artifactId: number | null;
+}
+
 export interface WeftGateway {
   balance(options: CallOptions): Promise<unknown>;
   search(
     request: CatalogSearchRequest,
     options: CallOptions,
   ): Promise<{ readonly results: readonly import("./catalog.js").CuratedOperation[] }>;
-  fetch(request: PaidRequest, options: FetchCallOptions): Promise<{ readonly bodyBase64: string }>;
+  fetch(request: PaidRequest, options: FetchCallOptions): Promise<PaidFetchResponse>;
 }
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -109,6 +118,22 @@ function decodeJson(bodyBase64: string): unknown {
   }
 }
 
+function providerName(provider: ProviderId): string {
+  return provider === "you-com" ? "You.com" : provider.charAt(0).toUpperCase() + provider.slice(1);
+}
+
+function paidFetchError(
+  provider: ProviderId,
+  response: PaidFetchResponse,
+  reason: string,
+  cause?: unknown,
+): Error {
+  const held = response.heldUsd === null ? "" : `, held: $${response.heldUsd}`;
+  const artifact = response.artifactId === null ? "none" : String(response.artifactId);
+  const message = `${providerName(provider)} ${reason} after a Weft paid fetch (payment: ${response.paymentStatus}, paid: $${response.paidUsd}${held}, artifact: ${artifact}). Check Weft purchase history before retrying.`;
+  return cause === undefined ? new Error(message) : new Error(message, { cause });
+}
+
 export function createSearchExecutor(gateway: WeftGateway, config: RuntimeConfig) {
   return async (
     input: { readonly query: string },
@@ -146,6 +171,24 @@ export function createSearchExecutor(gateway: WeftGateway, config: RuntimeConfig
       idempotencyKey: crypto.randomUUID(),
       signal: context.signal,
     });
-    return normalizeResults(operation.provider.id, decodeJson(response.bodyBase64));
+    if (response.status < 200 || response.status >= 300) {
+      throw paidFetchError(operation.provider.id, response, `returned HTTP ${response.status}`);
+    }
+
+    let results: readonly WebSearchResult[];
+    try {
+      results = normalizeResults(operation.provider.id, decodeJson(response.bodyBase64));
+    } catch (error) {
+      throw paidFetchError(
+        operation.provider.id,
+        response,
+        "returned invalid provider data",
+        error,
+      );
+    }
+    if (results.length === 0) {
+      throw paidFetchError(operation.provider.id, response, "returned no usable OpenCode results");
+    }
+    return results;
   };
 }

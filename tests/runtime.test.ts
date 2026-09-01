@@ -11,9 +11,14 @@ describe("search runtime", () => {
     const balance = vi.fn().mockResolvedValue({ balanceUsd: "1.00" });
     const search = vi.fn().mockResolvedValue({ results: [selected] });
     const fetch = vi.fn().mockResolvedValue({
+      status: 200,
       bodyBase64: Buffer.from(
         JSON.stringify({ results: { web: [{ url: "https://result.example", title: "Result" }] } }),
       ).toString("base64"),
+      paidUsd: "0.005",
+      heldUsd: null,
+      paymentStatus: "settled",
+      artifactId: 393,
     });
     const execute = createSearchExecutor(
       { balance, search, fetch },
@@ -47,9 +52,16 @@ describe("search runtime", () => {
     });
     const balance = vi.fn().mockResolvedValue({});
     const search = vi.fn().mockResolvedValue({ results: [selected] });
-    const fetch = vi
-      .fn()
-      .mockResolvedValue({ bodyBase64: Buffer.from('{"results":{"web":[]}}').toString("base64") });
+    const fetch = vi.fn().mockResolvedValue({
+      status: 200,
+      bodyBase64: Buffer.from('{"results":{"web":[{"url":"https://result.example"}]}}').toString(
+        "base64",
+      ),
+      paidUsd: "0.005",
+      heldUsd: null,
+      paymentStatus: "settled",
+      artifactId: 393,
+    });
     const execute = createSearchExecutor(
       { balance, search, fetch },
       { provider: "auto", maxCostUsd: "0.01" },
@@ -76,6 +88,58 @@ describe("search runtime", () => {
     await expect(
       execute({ query: "weft" }, { signal: new AbortController().signal }),
     ).rejects.toThrow(/uncertain/);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  test("reports an upstream failure with safe purchase context and does not retry", async () => {
+    const fetch = vi.fn().mockResolvedValue({
+      status: 429,
+      bodyBase64: Buffer.from('{"error":"rate limited"}').toString("base64"),
+      paidUsd: "0.007",
+      heldUsd: null,
+      paymentStatus: "settled",
+      artifactId: null,
+    });
+    const execute = createSearchExecutor(
+      {
+        balance: vi.fn().mockResolvedValue({}),
+        search: vi.fn().mockResolvedValue({ results: [operation("exa", "0.007")] }),
+        fetch,
+      },
+      { provider: "exa", maxCostUsd: "0.01" },
+    );
+
+    await expect(
+      execute({ query: "weft" }, { signal: new AbortController().signal }),
+    ).rejects.toThrow(
+      "Exa returned HTTP 429 after a Weft paid fetch (payment: settled, paid: $0.007, artifact: none). Check Weft purchase history before retrying.",
+    );
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  test("does not report a paid empty response as a successful search", async () => {
+    const fetch = vi.fn().mockResolvedValue({
+      status: 200,
+      bodyBase64: Buffer.from('{"results":[]}').toString("base64"),
+      paidUsd: "0.00",
+      heldUsd: "0.01",
+      paymentStatus: "pending",
+      artifactId: null,
+    });
+    const execute = createSearchExecutor(
+      {
+        balance: vi.fn().mockResolvedValue({}),
+        search: vi.fn().mockResolvedValue({ results: [operation("parallel", "0.01")] }),
+        fetch,
+      },
+      { provider: "parallel", maxCostUsd: "0.01" },
+    );
+
+    await expect(
+      execute({ query: "weft" }, { signal: new AbortController().signal }),
+    ).rejects.toThrow(
+      "Parallel returned no usable OpenCode results after a Weft paid fetch (payment: pending, paid: $0.00, held: $0.01, artifact: none). Check Weft purchase history before retrying.",
+    );
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 

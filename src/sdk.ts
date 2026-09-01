@@ -1,11 +1,11 @@
-import { WeftClient } from "@weft-labs/sdk";
 import type { FetchAPI } from "@weft-labs/sdk";
+import { WeftClient } from "@weft-labs/sdk";
 
 import { extractOperations } from "./catalog.js";
 import type { RuntimeConfig } from "./config.js";
 import { readApiKey } from "./config.js";
-import type { CatalogSearchRequest, WeftGateway } from "./runtime.js";
 import type { PaidRequest } from "./request.js";
+import type { CatalogSearchRequest, WeftGateway } from "./runtime.js";
 
 function client(config: RuntimeConfig, signal: AbortSignal): WeftClient {
   const fetchApi: FetchAPI = (input, init) => fetch(input, { ...init, signal });
@@ -39,7 +39,14 @@ export function createSdkGateway(config: RuntimeConfig): WeftGateway {
         },
         { idempotencyKey },
       );
-      return { bodyBase64: response.bodyBase64 };
+      return {
+        status: response.status,
+        bodyBase64: response.bodyBase64,
+        paidUsd: response.paidUsd,
+        heldUsd: response.heldUsd,
+        paymentStatus: response.paymentStatus,
+        artifactId: response.artifactId,
+      };
     },
   };
 }

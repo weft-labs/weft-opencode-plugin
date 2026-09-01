@@ -103,6 +103,10 @@ The plugin does not retry an uncertain paid request. If cancellation or a
 network error races with payment, inspect Weft purchase history before you run
 the query again.
 
+A provider HTTP error, invalid response, or response with no usable OpenCode
+results is reported as an error. The message includes safe payment state and
+artifact context. Inspect Weft purchase history before you retry it.
+
 ## Development
 
 ```sh
