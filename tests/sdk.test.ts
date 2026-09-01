@@ -49,6 +49,14 @@ describe("SDK gateway", () => {
       { idempotencyKey: "idempotency-1", signal: new AbortController().signal },
     );
 
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: '{"query":"weft"}',
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      }),
+      { idempotencyKey: "idempotency-1" },
+    );
     expect(response).toEqual({
       status: 200,
       bodyBase64: "e30=",

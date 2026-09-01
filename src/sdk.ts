@@ -35,7 +35,10 @@ export function createSdkGateway(config: RuntimeConfig): WeftGateway {
           operationId: request.operationId,
           accessMethodId: request.accessMethodId,
           ...(request.headers ? { headers: request.headers } : {}),
-          ...(request.body ? { body: request.body } : {}),
+          // SDK 0.23.0's generated FetchRequestBody serializer reduces object
+          // values to `{}`. A JSON string is the other supported wire shape,
+          // and the Weft API forwards it unchanged to the paid provider.
+          ...(request.body ? { body: JSON.stringify(request.body) } : {}),
         },
         { idempotencyKey },
       );
