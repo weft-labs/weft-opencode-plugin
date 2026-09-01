@@ -8,11 +8,15 @@ This plugin removes separate provider-key setup. It does not make search
 unlimited. Your Weft balance, wallet policy, per-call ceiling, and provider
 capacity still apply.
 
-## Requirements
+## Compatibility
 
-- OpenCode V2 `0.0.0-beta-18743`
+- OpenCode V2 beta `0.0.0-beta-18743`
 - Node.js 24 or later
 - A Weft account with a buyer API key and funded balance
+
+OpenCode V2 and its plugin API are beta software. This release pins the
+OpenCode plugin package to the same beta build as the supported runtime. Test a
+new OpenCode beta before you upgrade it.
 
 ## Install
 
@@ -30,7 +34,7 @@ export WEFT_API_KEY="your Weft buyer key"
 
 Do not put the key in `opencode.jsonc` or commit it to a file.
 
-Add the plugin and select its provider:
+Add the plugin:
 
 ```jsonc
 {
@@ -40,13 +44,11 @@ Add the plugin and select its provider:
       "package": "@weft-labs/opencode-websearch",
       "options": {
         "provider": "auto",
-        "maxCostUsd": "0.01"
+        "maxCostUsd": "0.01",
+        "default": true
       }
     }
   ],
-  "websearch": {
-    "provider": "weft"
-  },
   "permissions": [
     {
       "action": "websearch",
@@ -57,7 +59,18 @@ Add the plugin and select its provider:
 }
 ```
 
-Restart OpenCode after you change the environment or plugin configuration.
+The plugin registers Weft as an OpenCode integration and declares
+`WEFT_API_KEY` as its environment-based connection method. It also registers
+Weft as the native websearch provider. With `"default": true`, the plugin
+selects Weft as the default provider. Set this option to `false` when you want
+to select a different provider in OpenCode.
+
+OpenCode watches its configuration file. Restart the OpenCode service after
+you change an environment variable.
+
+See the official OpenCode V2 guides for
+[installing plugins](https://opencode.ai/v2/docs/plugins) and
+[building plugins](https://opencode.ai/v2/docs/build/plugins).
 
 ## Provider modes
 
@@ -83,6 +96,7 @@ Plugin options take precedence over the equivalent environment variables.
 | `provider` | `WEFT_WEBSEARCH_PROVIDER` | `auto` |
 | `maxCostUsd` | `WEFT_WEBSEARCH_MAX_COST_USD` | `0.01` |
 | `baseUrl` | `WEFT_BASE_URL` | `https://weft.network` |
+| `default` | None | `true` |
 
 `maxCostUsd` is a hard limit for one search. The live provider payment
 challenge is authoritative. Weft refuses a request when its price exceeds this
@@ -115,3 +129,7 @@ mise exec -- pnpm check
 ```
 
 Tests use local fixtures. They do not make paid calls.
+
+Before a release, also install the packed package in the supported OpenCode V2
+beta and run one controlled search. The plugin API can change between beta
+builds.

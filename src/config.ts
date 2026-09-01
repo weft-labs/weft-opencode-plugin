@@ -5,14 +5,28 @@ export type ProviderMode = "auto" | "youcom" | "exa" | "parallel" | "tavily";
 export interface RuntimeConfig {
   readonly provider: ProviderMode;
   readonly maxCostUsd: string;
+  readonly makeDefault: boolean;
   readonly baseUrl?: string;
 }
+
+export type SearchConfig = Omit<RuntimeConfig, "makeDefault">;
 
 type Environment = Readonly<Record<string, string | undefined>>;
 
 function stringOption(options: Readonly<Record<string, unknown>>, key: string): string | undefined {
   const value = options[key];
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function booleanOption(
+  options: Readonly<Record<string, unknown>>,
+  key: string,
+  fallback: boolean,
+): boolean {
+  const value = options[key];
+  if (value === undefined) return fallback;
+  if (typeof value === "boolean") return value;
+  throw new Error(`Weft websearch ${key} must be a boolean`);
 }
 
 function providerMode(value: string | undefined): ProviderMode {
@@ -49,11 +63,12 @@ export function readConfig(
   const provider = providerMode(
     stringOption(options, "provider") ?? environment.WEFT_WEBSEARCH_PROVIDER,
   );
+  const makeDefault = booleanOption(options, "default", true);
   const configuredBaseUrl = baseUrl(stringOption(options, "baseUrl") ?? environment.WEFT_BASE_URL);
 
   return configuredBaseUrl
-    ? { provider, maxCostUsd, baseUrl: configuredBaseUrl }
-    : { provider, maxCostUsd };
+    ? { provider, maxCostUsd, makeDefault, baseUrl: configuredBaseUrl }
+    : { provider, maxCostUsd, makeDefault };
 }
 
 export function readApiKey(environment: Environment = process.env): string {

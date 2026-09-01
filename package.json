@@ -24,11 +24,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@opencode-ai/plugin": "0.0.0-beta-18743",
     "@weft-labs/sdk": "0.23.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.7",
-    "@opencode-ai/plugin": "0.0.0-next-17444",
     "@types/node": "^24.10.0",
     "tsup": "^8.5.0",
     "typescript": "^6.0.3",

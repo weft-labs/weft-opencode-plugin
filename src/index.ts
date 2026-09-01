@@ -1,14 +1,24 @@
-import type { Plugin } from "@opencode-ai/plugin/promise/plugin";
+import { Plugin } from "@opencode-ai/plugin";
 
 import { readConfig } from "./config.js";
 import { createSearchExecutor } from "./runtime.js";
 import { createSdkGateway } from "./sdk.js";
 
-const plugin = {
+const plugin = Plugin.define({
   id: "weft.websearch",
   async setup(context) {
     const config = readConfig(context.options);
     const execute = createSearchExecutor(createSdkGateway(config), config);
+
+    await context.integration.transform((draft) => {
+      draft.update("weft", (integration) => {
+        integration.name = "Weft";
+      });
+      draft.method.update({
+        integrationID: "weft",
+        method: { type: "env", names: ["WEFT_API_KEY"] },
+      });
+    });
 
     await context.websearch.transform((draft) => {
       draft.add({
@@ -16,9 +26,10 @@ const plugin = {
         name: "Weft",
         execute,
       });
+      if (config.makeDefault) draft.default.set("weft");
     });
   },
-} satisfies Plugin;
+});
 
 export default plugin;
 export { extractOperations, selectOperation } from "./catalog.js";

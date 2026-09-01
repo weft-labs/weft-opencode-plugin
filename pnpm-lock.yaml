@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@opencode-ai/plugin':
+        specifier: 0.0.0-beta-18743
+        version: 0.0.0-beta-18743
       '@weft-labs/sdk':
         specifier: 0.23.0
         version: 0.23.0(@x402/core@2.24.0)
@@ -15,9 +18,6 @@ importers:
       '@biomejs/biome':
         specifier: 2.5.7
         version: 2.5.7
-      '@opencode-ai/plugin':
-        specifier: 0.0.0-next-17444
-        version: 0.0.0-next-17444
       '@types/node':
         specifier: ^24.10.0
         version: 24.13.3
@@ -315,45 +315,42 @@ packages:
     os: [linux]
     libc: [glibc]
 
-  '@opencode-ai/ai@0.0.0-next-17444':
-    resolution: {integrity: sha512-SbpDJrD9uSHEWm55gqpIvIsEM4PyX7/RPBmgp9mv7dpLT6iQmuadVWUC2RZw5SkSjmgzWpyJHdnE/HQae/HcmQ==}
+  '@opencode-ai/ai@0.0.0-beta-18743':
+    resolution: {integrity: sha512-CB/E7RGAGJze8HJt/2F0qNDcHBSmMYA6UboJepY7QpBhJ6uFmhak8ufcECFUoQ/ofbjDSH99E5uH1RLHpvVIjQ==}
 
-  '@opencode-ai/client@0.0.0-next-17444':
-    resolution: {integrity: sha512-o5nNtHTSqId6eQWJXdMQ132f8anOgm1q6YrB2JgiVGDfhu8EA8TLl2nrP1789CA7Tvkfr855sT/QiZaPynVFcQ==}
+  '@opencode-ai/client@0.0.0-beta-18743':
+    resolution: {integrity: sha512-iNWpgNw/YsboXkrVn6VtUvclhh9UVF6zIoLEdvgtLeaZ/dUovALECH1+xwG9u5e4GgK3x37mjKweSozjjMKwFA==}
     peerDependencies:
-      effect: 4.0.0-beta.101
+      effect: 4.0.0-rc.112
+      solid-js: '>=1.9.0'
     peerDependenciesMeta:
       effect:
         optional: true
+      solid-js:
+        optional: true
 
-  '@opencode-ai/plugin@0.0.0-next-17444':
-    resolution: {integrity: sha512-iYyUBRumtCfQ6Lvch/s24ExgQAVTaOFetKD9bzBUrQiQHRotfuFTYUuFk4ZTtnEP5Gy1mJcPWMeFmYxJQV5Yvw==}
+  '@opencode-ai/plugin@0.0.0-beta-18743':
+    resolution: {integrity: sha512-nNLWolkOo+5DYAQ850Ztf0W3++bf6NR5ivKaXXD4lN/h+53mAdxX8pvPQLGC+Kxq1vLml9tSgJfrFYOp0gvvhA==}
     peerDependencies:
-      '@opencode-ai/theme': 0.0.0-next-17444
-      '@opentui/core': '>=0.5.3'
-      '@opentui/keymap': '>=0.5.3'
-      '@opentui/solid': '>=0.5.3'
+      '@opencode-ai/theme': 0.0.0-beta-18743
+      '@opentui/core': '>=0.5.9'
+      '@opentui/solid': '>=0.5.9'
       solid-js: '>=1.9.0'
     peerDependenciesMeta:
       '@opencode-ai/theme':
         optional: true
       '@opentui/core':
         optional: true
-      '@opentui/keymap':
-        optional: true
       '@opentui/solid':
         optional: true
       solid-js:
         optional: true
 
-  '@opencode-ai/protocol@0.0.0-next-17444':
-    resolution: {integrity: sha512-IHCsPp3Tu0BlCqIziANPL04spnAO1NaN91eUeuwYPP1SGF1BhQltilG5jjzcTNssd+I7SbOEcpYs5TIrFKwAjQ==}
+  '@opencode-ai/protocol@0.0.0-beta-18743':
+    resolution: {integrity: sha512-hE/tg0ag+l+UYoWrnw3i9gaatVVIhP8/b+Hdz/vII5PvqV+pjzGNyUZUGqOqDVYS96fOPaNjeh+XRgQ+iQP7eA==}
 
-  '@opencode-ai/schema@0.0.0-next-17444':
-    resolution: {integrity: sha512-HhiKwCFDqOABWbjQgmTQcltRnoRaLxkK6TyXbQpCY1+QnvHu7hxJIwgL0z8YFhYNxyTCTgy85UccEvaBgfwwvg==}
-
-  '@opencode-ai/sdk@1.18.5':
-    resolution: {integrity: sha512-7KgMvP5/1oxbhHj6kYBtPSTEdFKYpUeEYOzBTKdzSaRpapUpFFdn6Hkus3rr0rljO0kukWZIgRd3DrVBwTULGA==}
+  '@opencode-ai/schema@0.0.0-beta-18743':
+    resolution: {integrity: sha512-w+Df3oNf0HvLxyfY6vpw8dB8EMhjdF96bjUePOMDLEzich6lFb5IBuzyd4T0jG9wMSfbDi01CTz7ZZYKM2+IwQ==}
 
   '@oxc-project/types@0.147.0':
     resolution: {integrity: sha512-IJ3s6ltHLp45S0bh7phkX+gJO7A1Wuz2EaqpAhb8WjqDwbzMiWKHhyyT42tskaWjEYXtHtVCPpnBJVT9+dcRLg==}
@@ -804,8 +801,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  effect@4.0.0-beta.101:
-    resolution: {integrity: sha512-HjowumlIo+orthn4jMlEJPuzIYPBV+uq/XiciHWhiedLsXQpWHdNJHO5d59BVDP5s1LPuvERcktwFqRXnJqnhA==}
+  effect@4.0.0-rc.112:
+    resolution: {integrity: sha512-wXxwuh1Ywnv4cPRM3Wfa0vDwuOHnZ1TsTgHJkG9XgzND6inhBH9n1vBxhg3iIXOia/OrpmvVmd3lrD4vq6bF3A==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -847,9 +844,6 @@ packages:
   fetch-blob@3.2.0:
     resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
     engines: {node: ^12.20 || >= 14.13}
-
-  find-my-way-ts@0.1.6:
-    resolution: {integrity: sha512-a85L9ZoXtNAey3Y6Z+eBWW658kO/MwR7zIafkIUPUMf3isZG0NCs2pjW2wtjxAKuJPxMAsHUIP4ZPGv0o5gyTA==}
 
   fix-dts-default-cjs-exports@1.0.1:
     resolution: {integrity: sha512-pVIECanWFC61Hzl2+oOCtoJ3F17kglZC/6N94eRWycFgBH35hHx0Li604ZIzhseh97mf2p0cv7vVrOZGoqhlEg==}
@@ -904,10 +898,6 @@ packages:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
 
-  ini@7.0.0:
-    resolution: {integrity: sha512-ifK0CgjALofS5bkrcTy4RaQ9Vx2Knf/eLeIO+NaswQEpH1UblrtTSCIvN71qQDMq0PeQ/SSPojvEJp9vvvfr+w==}
-    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
-
   is-fullwidth-code-point@3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
     engines: {node: '>=8'}
@@ -933,9 +923,6 @@ packages:
 
   jws@4.0.1:
     resolution: {integrity: sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==}
-
-  kubernetes-types@1.30.0:
-    resolution: {integrity: sha512-Dew1okvhM/SQcIa2rcgujNndZwU8VnSapDgdxlYoB84ZlpAD43U6KLAFqYo17ykSFGHNPrg0qry0bP+GJd9v7Q==}
 
   lightningcss-android-arm64@1.33.0:
     resolution: {integrity: sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==}
@@ -1048,9 +1035,6 @@ packages:
 
   msgpackr@2.1.0:
     resolution: {integrity: sha512-p/pBCVO63CsvvpkomUnNNag6+n38rULuDA6HHe70o2gtC8ODI52foF/4ko2qQcp6OiErJXTmrZeXmsGGHsIQNQ==}
-
-  multipasta@0.2.8:
-    resolution: {integrity: sha512-ZPWuMKyv0cSO29f7hozp+k6+crZbQijV8ipMvxNxRf2SwtYGTX1ZX89Kd20VV4H9Znonx+EQn+iy1wGQsJ+b+Q==}
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
@@ -1234,10 +1218,6 @@ packages:
     resolution: {integrity: sha512-yau8yJdTt989Mm0Bd/236QnzEiPf2xLLTqUZRUJOo/3CB078LSwzei343DgtJVmfJKJE3TMINY1u42SQsP6mXw==}
     engines: {node: '>=14.0.0'}
 
-  toml@4.3.0:
-    resolution: {integrity: sha512-lVb8X9BsPVuH0M4BKeS91tXAmJvCjQ5UIyAbQFaxkKGyUFK2RPkhwaFSQH8vbpl1d23eu/IBH+dwVMHWaq9A5A==}
-    engines: {node: '>=20'}
-
   tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
@@ -1277,10 +1257,6 @@ packages:
 
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
-
-  uuid@14.0.2:
-    resolution: {integrity: sha512-xZe/16rV4aa+HGSOCiY2YeLT1OybRLrrkL/Rqaq7p7GMVXjFh+6wN4oMYgjFmnSnhY8t6Xpdl2l9qmnHYuMHwQ==}
-    hasBin: true
 
   vite@8.2.2:
     resolution: {integrity: sha512-cFKLV/PRgAUlIRm5WjMjJ86jrftzpqcgH+Us+DS8mI3CDNiH30Whrz8uHL3+MOLPAgqbMBAqWdAHAphOAM+z/Q==}
@@ -1579,50 +1555,46 @@ snapshots:
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
 
-  '@opencode-ai/ai@0.0.0-next-17444':
+  '@opencode-ai/ai@0.0.0-beta-18743':
     dependencies:
-      '@opencode-ai/schema': 0.0.0-next-17444
+      '@opencode-ai/schema': 0.0.0-beta-18743
       '@smithy/eventstream-codec': 4.2.14
       '@smithy/util-utf8': 4.2.2
       aws4fetch: 1.0.20
-      effect: 4.0.0-beta.101
+      effect: 4.0.0-rc.112
       google-auth-library: 10.5.0
     transitivePeerDependencies:
       - supports-color
 
-  '@opencode-ai/client@0.0.0-next-17444(effect@4.0.0-beta.101)':
+  '@opencode-ai/client@0.0.0-beta-18743(effect@4.0.0-rc.112)':
     dependencies:
-      '@opencode-ai/protocol': 0.0.0-next-17444
-      '@opencode-ai/schema': 0.0.0-next-17444
+      '@opencode-ai/protocol': 0.0.0-beta-18743
+      '@opencode-ai/schema': 0.0.0-beta-18743
     optionalDependencies:
-      effect: 4.0.0-beta.101
+      effect: 4.0.0-rc.112
 
-  '@opencode-ai/plugin@0.0.0-next-17444':
+  '@opencode-ai/plugin@0.0.0-beta-18743':
     dependencies:
       '@ai-sdk/provider': 3.0.8
-      '@opencode-ai/ai': 0.0.0-next-17444
-      '@opencode-ai/client': 0.0.0-next-17444(effect@4.0.0-beta.101)
-      '@opencode-ai/schema': 0.0.0-next-17444
-      '@opencode-ai/sdk': 1.18.5
+      '@opencode-ai/ai': 0.0.0-beta-18743
+      '@opencode-ai/client': 0.0.0-beta-18743(effect@4.0.0-rc.112)
+      '@opencode-ai/protocol': 0.0.0-beta-18743
+      '@opencode-ai/schema': 0.0.0-beta-18743
       '@standard-schema/spec': 1.1.0
-      effect: 4.0.0-beta.101
+      effect: 4.0.0-rc.112
       zod: 4.1.8
     transitivePeerDependencies:
       - supports-color
 
-  '@opencode-ai/protocol@0.0.0-next-17444':
+  '@opencode-ai/protocol@0.0.0-beta-18743':
     dependencies:
-      '@opencode-ai/schema': 0.0.0-next-17444
-      effect: 4.0.0-beta.101
+      '@opencode-ai/schema': 0.0.0-beta-18743
+      effect: 4.0.0-rc.112
 
-  '@opencode-ai/schema@0.0.0-next-17444':
+  '@opencode-ai/schema@0.0.0-beta-18743':
     dependencies:
       '@standard-schema/spec': 1.1.0
-      effect: 4.0.0-beta.101
-
-  '@opencode-ai/sdk@1.18.5':
-    dependencies:
-      cross-spawn: 7.0.6
+      effect: 4.0.0-rc.112
 
   '@oxc-project/types@0.147.0': {}
 
@@ -1939,18 +1911,10 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  effect@4.0.0-beta.101:
+  effect@4.0.0-rc.112:
     dependencies:
-      '@standard-schema/spec': 1.1.0
       fast-check: 4.9.0
-      find-my-way-ts: 0.1.6
-      ini: 7.0.0
-      kubernetes-types: 1.30.0
       msgpackr: 2.1.0
-      multipasta: 0.2.8
-      toml: 4.3.0
-      uuid: 14.0.2
-      yaml: 2.9.0
 
   emoji-regex@8.0.0: {}
 
@@ -2007,8 +1971,6 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.3.3
-
-  find-my-way-ts@0.1.6: {}
 
   fix-dts-default-cjs-exports@1.0.1:
     dependencies:
@@ -2092,8 +2054,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ini@7.0.0: {}
-
   is-fullwidth-code-point@3.0.0: {}
 
   isexe@2.0.0: {}
@@ -2122,8 +2082,6 @@ snapshots:
     dependencies:
       jwa: 2.0.1
       safe-buffer: 5.2.1
-
-  kubernetes-types@1.30.0: {}
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -2216,8 +2174,6 @@ snapshots:
   msgpackr@2.1.0:
     optionalDependencies:
       msgpackr-extract: 3.0.4
-
-  multipasta@0.2.8: {}
 
   mz@2.7.0:
     dependencies:
@@ -2414,8 +2370,6 @@ snapshots:
 
   tinyrainbow@3.1.1: {}
 
-  toml@4.3.0: {}
-
   tree-kill@1.2.2: {}
 
   ts-interface-checker@0.1.13: {}
@@ -2455,8 +2409,6 @@ snapshots:
   ufo@1.6.4: {}
 
   undici-types@7.18.2: {}
-
-  uuid@14.0.2: {}
 
   vite@8.2.2(@types/node@24.13.3)(esbuild@0.27.7)(yaml@2.9.0):
     dependencies:
@@ -2521,7 +2473,8 @@ snapshots:
       string-width: 5.1.2
       strip-ansi: 7.2.0
 
-  yaml@2.9.0: {}
+  yaml@2.9.0:
+    optional: true
 
   zod@3.25.76: {}
 
