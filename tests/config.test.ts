@@ -17,6 +17,12 @@ describe("configuration", () => {
     expect(() => readConfig({ baseUrl: "http://weft.example" }, {})).toThrow(/must use HTTPS/);
   });
 
+  test("removes long trailing slash sequences", () => {
+    const config = readConfig({ baseUrl: `https://weft.example${"/".repeat(10_000)}` }, {});
+
+    expect(config.baseUrl).toBe("https://weft.example");
+  });
+
   test("requires one Weft buyer key before a gateway can start network work", () => {
     expect(() => readApiKey({})).toThrow(/WEFT_API_KEY is required/);
     expect(readApiKey({ WEFT_API_KEY: " wk_example " })).toBe("wk_example");

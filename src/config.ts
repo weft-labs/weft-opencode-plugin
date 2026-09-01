@@ -31,7 +31,9 @@ function baseUrl(value: string | undefined): string | undefined {
   if (parsed.protocol !== "https:" && !(parsed.protocol === "http:" && local)) {
     throw new Error("WEFT_BASE_URL must use HTTPS, except for localhost development");
   }
-  return value.replace(/\/+$/, "");
+  let end = value.length;
+  while (end > 0 && value.charCodeAt(end - 1) === 47) end -= 1;
+  return value.slice(0, end);
 }
 
 export function readConfig(
