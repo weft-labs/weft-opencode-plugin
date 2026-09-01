@@ -1,6 +1,6 @@
 import type { ProviderId } from "./catalog.js";
 import { selectOperation } from "./catalog.js";
-import type { RuntimeConfig } from "./config.js";
+import type { SearchConfig } from "./config.js";
 import { usdToMicros } from "./money.js";
 import type { WebSearchResult } from "./normalize.js";
 import { normalizeResults } from "./normalize.js";
@@ -91,7 +91,7 @@ export function assertSpendAvailable(balanceValue: unknown, maxCostUsd: string):
   }
 }
 
-function catalogQuery(provider: RuntimeConfig["provider"]): string {
+function catalogQuery(provider: SearchConfig["provider"]): string {
   return provider === "auto"
     ? "You.com Exa Parallel Tavily synchronous web search API"
     : `${provider} provider synchronous web search API`;
@@ -134,7 +134,7 @@ function paidFetchError(
   return cause === undefined ? new Error(message) : new Error(message, { cause });
 }
 
-export function createSearchExecutor(gateway: WeftGateway, config: RuntimeConfig) {
+export function createSearchExecutor(gateway: WeftGateway, config: SearchConfig) {
   return async (
     input: { readonly query: string },
     context: { readonly signal: AbortSignal },

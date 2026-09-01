@@ -9,5 +9,11 @@ ignoredBuiltDependencies:
 
 blockExoticSubdeps: true
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - "@opencode-ai/ai@0.0.0-beta-18743"
+  - "@opencode-ai/client@0.0.0-beta-18743"
+  - "@opencode-ai/plugin@0.0.0-beta-18743"
+  - "@opencode-ai/protocol@0.0.0-beta-18743"
+  - "@opencode-ai/schema@0.0.0-beta-18743"
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 525960

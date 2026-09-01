@@ -4,10 +4,15 @@ import { readApiKey, readConfig } from "../src/config.js";
 
 describe("configuration", () => {
   test("uses safe defaults and accepts fixed provider options", () => {
-    expect(readConfig({}, {})).toEqual({ provider: "auto", maxCostUsd: "0.01" });
-    expect(readConfig({ provider: "tavily", maxCostUsd: "0.005" }, {})).toEqual({
+    expect(readConfig({}, {})).toEqual({
+      provider: "auto",
+      maxCostUsd: "0.01",
+      makeDefault: true,
+    });
+    expect(readConfig({ provider: "tavily", maxCostUsd: "0.005", default: false }, {})).toEqual({
       provider: "tavily",
       maxCostUsd: "0.005",
+      makeDefault: false,
     });
   });
 
@@ -15,6 +20,7 @@ describe("configuration", () => {
     expect(() => readConfig({ provider: "random" }, {})).toThrow(/Invalid Weft websearch provider/);
     expect(() => readConfig({ maxCostUsd: "1.2345678" }, {})).toThrow(/Invalid USD amount/);
     expect(() => readConfig({ baseUrl: "http://weft.example" }, {})).toThrow(/must use HTTPS/);
+    expect(() => readConfig({ default: "false" }, {})).toThrow(/default must be a boolean/);
   });
 
   test("removes long trailing slash sequences", () => {
