@@ -18,6 +18,11 @@ OpenCode V2 and its plugin API are beta software. This release pins the
 OpenCode plugin package to the same beta build as the supported runtime. Test a
 new OpenCode beta before you upgrade it.
 
+The OpenCode V2 beta and the current 1.x `dev` plugin contract are different.
+This package requires the public `websearch` domain on the plugin context. It
+does not support an OpenCode build whose plugin context does not expose that
+domain.
+
 ## Install
 
 Install the package with OpenCode:
