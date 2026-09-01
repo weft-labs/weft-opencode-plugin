@@ -1,0 +1,61 @@
+{
+  "name": "@weft-labs/opencode-websearch",
+  "version": "0.1.0",
+  "description": "OpenCode V2 websearch provider powered by Weft",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@weft-labs/sdk": "0.23.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.7",
+    "@opencode-ai/plugin": "0.0.0-next-17444",
+    "@types/node": "^24.10.0",
+    "tsup": "^8.5.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "0.0.0-next-17444"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.33.4",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weft-labs/weft-opencode-plugin.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "opencode",
+    "weft",
+    "websearch",
+    "x402"
+  ]
+}
