@@ -10,16 +10,16 @@ capacity still apply.
 
 ## Requirements
 
-- OpenCode V2 `0.0.0-next-17444`
+- OpenCode V2 `0.0.0-beta-18743`
 - Node.js 24 or later
 - A Weft account with a buyer API key and funded balance
 
 ## Install
 
-Add the package to the OpenCode project that loads your plugins:
+Install the package with OpenCode:
 
 ```sh
-pnpm add @weft-labs/opencode-websearch
+opencode2 plugin add @weft-labs/opencode-websearch
 ```
 
 Set the Weft buyer key in the environment that starts OpenCode:
@@ -111,4 +111,3 @@ mise exec -- pnpm check
 ```
 
 Tests use local fixtures. They do not make paid calls.
-
