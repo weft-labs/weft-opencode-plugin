@@ -41,7 +41,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/weft-labs/weft-opencode-plugin.git"
+    "url": "https://github.com/weftlabs/weft-opencode-plugin.git"
   },
   "publishConfig": {
     "access": "public"
