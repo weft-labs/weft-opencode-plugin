@@ -104,14 +104,20 @@ jobs:
             exit 1
           fi
 
+          LOCAL_INTEGRITY="sha512-$(node -e 'const crypto=require("node:crypto"); const fs=require("node:fs"); process.stdout.write(crypto.createHash("sha512").update(fs.readFileSync(process.argv[1])).digest("base64"))' "$TARBALL")"
           SHOULD_PUBLISH=true
-          if PUBLISHED_HEAD="$(pnpm view "$PACKAGE_NAME@$PACKAGE_VERSION" gitHead 2>/dev/null)"; then
-            if [ "$PUBLISHED_HEAD" != "$TAG_SHA" ]; then
-              echo "::error::$PACKAGE_NAME@$PACKAGE_VERSION already exists from commit $PUBLISHED_HEAD, not $TAG_SHA"
+          if PUBLISHED_INTEGRITY="$(pnpm view "$PACKAGE_NAME@$PACKAGE_VERSION" dist.integrity 2>/dev/null)"; then
+            if [ "$PUBLISHED_INTEGRITY" != "$LOCAL_INTEGRITY" ]; then
+              echo "::error::$PACKAGE_NAME@$PACKAGE_VERSION exists with different package bytes"
+              exit 1
+            fi
+            PUBLISHED_HEAD="$(pnpm view "$PACKAGE_NAME@$PACKAGE_VERSION" gitHead 2>/dev/null || true)"
+            if [ -n "$PUBLISHED_HEAD" ] && [ "$PUBLISHED_HEAD" != "$TAG_SHA" ]; then
+              echo "::error::$PACKAGE_NAME@$PACKAGE_VERSION has matching bytes but records commit $PUBLISHED_HEAD, not $TAG_SHA"
               exit 1
             fi
             SHOULD_PUBLISH=false
-            echo "$PACKAGE_NAME@$PACKAGE_VERSION is already published from $TAG_SHA"
+            echo "$PACKAGE_NAME@$PACKAGE_VERSION already has the promoted package bytes"
           fi
 
           echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"

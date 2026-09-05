@@ -57,6 +57,8 @@ describe("package installation contract", () => {
     expect(releaseWorkflow).toContain("id-token: write");
     expect(releaseWorkflow).toContain("environment: npm");
     expect(releaseWorkflow).toContain("gh run download");
+    expect(releaseWorkflow).toContain("dist.integrity");
+    expect(releaseWorkflow).toContain("sha512-");
     expect(releaseWorkflow).toContain('pnpm publish "$TARBALL"');
     expect(releaseWorkflow).not.toContain("NPM_TOKEN");
     expect(releaseWorkflow).not.toContain("NODE_AUTH_TOKEN");
