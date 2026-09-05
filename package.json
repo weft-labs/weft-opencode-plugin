@@ -1,5 +1,5 @@
 {
-  "name": "@weftlab/opencode-websearch",
+  "name": "@weftlabs/opencode-websearch",
   "version": "0.1.0",
   "description": "OpenCode V2 websearch provider powered by Weft",
   "type": "module",

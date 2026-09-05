@@ -18,7 +18,7 @@ const releaseWorkflow = readFileSync(
 describe("package installation contract", () => {
   test("ships a source entrypoint for lifecycle-free OpenCode installs", () => {
     expect(plugin.id).toBe("weft.websearch");
-    expect(manifest.name).toBe("@weftlab/opencode-websearch");
+    expect(manifest.name).toBe("@weftlabs/opencode-websearch");
     expect(manifest.exports).toBe("./index.ts");
     expect(manifest.files).toContain("index.ts");
     expect(manifest.files).toContain("src");
@@ -59,6 +59,8 @@ describe("package installation contract", () => {
     expect(releaseWorkflow).toContain("gh run download");
     expect(releaseWorkflow).toContain("dist.integrity");
     expect(releaseWorkflow).toContain("sha512-");
+    expect(releaseWorkflow).toContain('"@weftlabs/opencode-websearch"');
+    expect(releaseWorkflow).not.toContain('"@weftlab/opencode-websearch"');
     expect(releaseWorkflow).toContain('pnpm publish "$TARBALL"');
     expect(releaseWorkflow).not.toContain("NPM_TOKEN");
     expect(releaseWorkflow).not.toContain("NODE_AUTH_TOKEN");

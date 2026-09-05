@@ -28,7 +28,7 @@ domain.
 Install the package with OpenCode:
 
 ```sh
-opencode2 plugin add @weftlab/opencode-websearch
+opencode2 plugin add @weftlabs/opencode-websearch
 ```
 
 Set the Weft buyer key in the environment that starts OpenCode:
@@ -46,7 +46,7 @@ Add the plugin:
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
     {
-      "package": "@weftlab/opencode-websearch",
+      "package": "@weftlabs/opencode-websearch",
       "options": {
         "provider": "auto",
         "maxCostUsd": "0.01",

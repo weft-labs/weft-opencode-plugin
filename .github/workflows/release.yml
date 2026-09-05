@@ -95,7 +95,7 @@ jobs:
           ARCHIVE_MANIFEST="$(tar -xOf "$TARBALL" package/package.json)"
           PACKAGE_NAME="$(node -e 'const fs=require("node:fs"); process.stdout.write(JSON.parse(fs.readFileSync(0,"utf8")).name)' <<<"$ARCHIVE_MANIFEST")"
           PACKAGE_VERSION="$(node -e 'const fs=require("node:fs"); process.stdout.write(JSON.parse(fs.readFileSync(0,"utf8")).version)' <<<"$ARCHIVE_MANIFEST")"
-          if [ "$PACKAGE_NAME" != "@weftlab/opencode-websearch" ]; then
+          if [ "$PACKAGE_NAME" != "@weftlabs/opencode-websearch" ]; then
             echo "::error::Unexpected package name $PACKAGE_NAME"
             exit 1
           fi
