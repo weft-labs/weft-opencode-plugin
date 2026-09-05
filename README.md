@@ -28,7 +28,7 @@ domain.
 Install the package with OpenCode:
 
 ```sh
-opencode2 plugin add @weft-labs/opencode-websearch
+opencode2 plugin add @weftlab/opencode-websearch
 ```
 
 Set the Weft buyer key in the environment that starts OpenCode:
@@ -46,7 +46,7 @@ Add the plugin:
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
     {
-      "package": "@weft-labs/opencode-websearch",
+      "package": "@weftlab/opencode-websearch",
       "options": {
         "provider": "auto",
         "maxCostUsd": "0.01",
@@ -138,3 +138,15 @@ Tests use local fixtures. They do not make paid calls.
 Before a release, also install the packed package in the supported OpenCode V2
 beta and run one controlled search. The plugin API can change between beta
 builds.
+
+## Maintainer release
+
+CI packs the release candidate on each push to `main`. Publishing a GitHub
+release promotes that exact CI artifact to npm; the release workflow does not
+rebuild it.
+
+Configure npm trusted publishing for GitHub organization `weftlabs`, repository
+`weft-opencode-plugin`, workflow `release.yml`, and environment `npm`. Allow
+`npm publish`. The first package version must be bootstrapped once before npm
+can save this trusted-publisher binding. Do not store a long-lived npm publish
+token in GitHub.
