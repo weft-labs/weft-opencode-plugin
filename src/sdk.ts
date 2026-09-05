@@ -1,5 +1,5 @@
-import type { FetchAPI } from "@weft-labs/sdk";
-import { WeftClient } from "@weft-labs/sdk";
+import type { FetchAPI } from "@weftlabs/sdk";
+import { WeftClient } from "@weftlabs/sdk";
 
 import { extractOperations } from "./catalog.js";
 import type { SearchConfig } from "./config.js";

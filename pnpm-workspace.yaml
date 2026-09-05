@@ -10,6 +10,7 @@ ignoredBuiltDependencies:
 blockExoticSubdeps: true
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
+  - "@weftlabs/sdk@0.25.0"
   - "@opencode-ai/ai@0.0.0-beta-18743"
   - "@opencode-ai/client@0.0.0-beta-18743"
   - "@opencode-ai/plugin@0.0.0-beta-18743"
