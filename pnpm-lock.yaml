@@ -11,9 +11,9 @@ importers:
       '@opencode-ai/plugin':
         specifier: 0.0.0-beta-18743
         version: 0.0.0-beta-18743
-      '@weft-labs/sdk':
-        specifier: 0.23.0
-        version: 0.23.0(@x402/core@2.24.0)
+      '@weftlabs/sdk':
+        specifier: 0.25.0
+        version: 0.25.0(@x402/core@2.24.0)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.5.11
@@ -676,8 +676,8 @@ packages:
   '@vitest/utils@4.1.11':
     resolution: {integrity: sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==}
 
-  '@weft-labs/sdk@0.23.0':
-    resolution: {integrity: sha512-Ocbrepmft6CkeHvV3etm2Bz6EbndguqwjjBn6f+6diQrp8LhANvF8TSggZZKKOSn58u19UuHnL5N5Jx4Trelvw==}
+  '@weftlabs/sdk@0.25.0':
+    resolution: {integrity: sha512-Pj+jEFIjGCApy0WA13nAFSFeq4y2FAm1rrOq7+56oPiTO03owgPABF16UVZXbvCWMH+zGLzcY7deutS7n8LOJg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@x402/core': ^2.24.0
@@ -1824,7 +1824,7 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.1
 
-  '@weft-labs/sdk@0.23.0(@x402/core@2.24.0)':
+  '@weftlabs/sdk@0.25.0(@x402/core@2.24.0)':
     dependencies:
       '@x402/core': 2.24.0
 

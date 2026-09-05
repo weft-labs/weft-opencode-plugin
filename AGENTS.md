@@ -10,7 +10,7 @@ websearch operation, buys it through Weft, and returns native OpenCode results.
 - TypeScript, ESM, Node 24
 - pnpm 10
 - Vitest, Biome, tsup
-- `@weft-labs/sdk` buyer client
+- `@weftlabs/sdk` buyer client
 - OpenCode V2 promise plugin contract
 
 ## Commands
@@ -36,4 +36,3 @@ mise exec -- pnpm check
   IDs. Do not buy a semantic near-match.
 - Keep secrets out of source, tests, fixtures, logs, and plugin options.
 - Patrick owns the merge and release gates.
-
