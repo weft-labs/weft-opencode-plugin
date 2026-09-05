@@ -1,0 +1,124 @@
+name: Publish npm package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm
+    steps:
+      - name: Checkout the release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.4
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Resolve the exact main CI artifact
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          EXPECTED_TAG="v${PACKAGE_VERSION}"
+          if [ "$RELEASE_TAG" != "$EXPECTED_TAG" ]; then
+            echo "::error::Release tag $RELEASE_TAG does not match package version $PACKAGE_VERSION"
+            exit 1
+          fi
+
+          TAG_SHA="$(git rev-parse HEAD)"
+          RUNS="$(gh run list --workflow ci.yml --commit "$TAG_SHA" --event push --status success --limit 20 --json databaseId,headSha,conclusion)"
+          RUN_ID="$(jq -r --arg sha "$TAG_SHA" '[.[] | select(.headSha == $sha and .conclusion == "success")] | first | .databaseId // empty' <<<"$RUNS")"
+          if [ -z "$RUN_ID" ]; then
+            echo "::error::No successful main CI run exists for release commit $TAG_SHA"
+            exit 1
+          fi
+
+          {
+            echo "tag-sha=$TAG_SHA"
+            echo "run-id=$RUN_ID"
+            echo "version=$PACKAGE_VERSION"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Download the promoted package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ steps.candidate.outputs.run-id }}
+          TAG_SHA: ${{ steps.candidate.outputs.tag-sha }}
+        run: |
+          gh run download "$RUN_ID" \
+            --name "npm-package-$TAG_SHA" \
+            --dir release-artifact
+
+      - name: Verify the promoted package
+        id: package
+        env:
+          EXPECTED_VERSION: ${{ steps.candidate.outputs.version }}
+          TAG_SHA: ${{ steps.candidate.outputs.tag-sha }}
+        run: |
+          mapfile -t TARBALLS < <(find release-artifact -maxdepth 1 -type f -name '*.tgz' -print)
+          if [ "${#TARBALLS[@]}" -ne 1 ]; then
+            echo "::error::Expected one package tarball, found ${#TARBALLS[@]}"
+            exit 1
+          fi
+
+          TARBALL="${TARBALLS[0]}"
+          ARCHIVE_MANIFEST="$(tar -xOf "$TARBALL" package/package.json)"
+          PACKAGE_NAME="$(node -e 'const fs=require("node:fs"); process.stdout.write(JSON.parse(fs.readFileSync(0,"utf8")).name)' <<<"$ARCHIVE_MANIFEST")"
+          PACKAGE_VERSION="$(node -e 'const fs=require("node:fs"); process.stdout.write(JSON.parse(fs.readFileSync(0,"utf8")).version)' <<<"$ARCHIVE_MANIFEST")"
+          if [ "$PACKAGE_NAME" != "@weftlab/opencode-websearch" ]; then
+            echo "::error::Unexpected package name $PACKAGE_NAME"
+            exit 1
+          fi
+          if [ "$PACKAGE_VERSION" != "$EXPECTED_VERSION" ]; then
+            echo "::error::Artifact version $PACKAGE_VERSION does not match release version $EXPECTED_VERSION"
+            exit 1
+          fi
+
+          SHOULD_PUBLISH=true
+          if PUBLISHED_HEAD="$(pnpm view "$PACKAGE_NAME@$PACKAGE_VERSION" gitHead 2>/dev/null)"; then
+            if [ "$PUBLISHED_HEAD" != "$TAG_SHA" ]; then
+              echo "::error::$PACKAGE_NAME@$PACKAGE_VERSION already exists from commit $PUBLISHED_HEAD, not $TAG_SHA"
+              exit 1
+            fi
+            SHOULD_PUBLISH=false
+            echo "$PACKAGE_NAME@$PACKAGE_VERSION is already published from $TAG_SHA"
+          fi
+
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+          echo "should-publish=$SHOULD_PUBLISH" >> "$GITHUB_OUTPUT"
+
+      - name: Publish with npm trusted publishing
+        if: steps.package.outputs.should-publish == 'true'
+        env:
+          TARBALL: ${{ steps.package.outputs.tarball }}
+        run: pnpm publish "$TARBALL" --access public --provenance --no-git-checks
